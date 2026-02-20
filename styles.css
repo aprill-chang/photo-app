@@ -1,0 +1,263 @@
+/* Minimalistic photography aesthetic – mobile-first */
+
+:root {
+  --bg: #fafaf8;
+  --text: #1a1a1a;
+  --text-muted: #4a4a4a;
+  --gap: 1.5rem;
+  --section-space: 4rem;
+  --nav-gap: 1.25rem;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-system);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+/* Hero: video then "Thank you for coming" */
+.hero {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0efec;
+}
+
+.hero-video-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hero-video {
+  width: 100%;
+  height: 70vh;
+  min-height: 280px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* Video controls: mute (Instagram-style) */
+.hero-video-controls {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.video-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.video-control:hover,
+.video-control:focus {
+  background: rgba(0, 0, 0, 0.75);
+  outline: none;
+}
+
+.video-control:active {
+  transform: scale(0.95);
+}
+
+.video-control svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+
+.hero-content {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.hero-text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+/* Section navigation – sticky at top when scrolling */
+.section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--nav-gap);
+  padding: 2.5rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: var(--bg);
+}
+
+.section-nav a {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  padding: 0.25em 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.section-nav a:hover,
+.section-nav a:focus {
+  opacity: 0.8;
+  border-bottom-color: var(--text-muted);
+  outline: none;
+}
+
+/* Main content */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem var(--section-space);
+}
+
+/* Photo sections */
+.photo-section {
+  padding-top: var(--section-space);
+  padding-bottom: var(--section-space);
+}
+
+.photo-section:first-of-type {
+  padding-top: var(--section-space);
+}
+
+.photo-section h2 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+.photo-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
+
+/* Other Videos section – embed style with mute button (like hero) */
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+.section-video-wrap {
+  position: relative;
+  width: 100%;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.section-video {
+  width: 100%;
+  height: 70vh;
+  min-height: 280px;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.section-video-controls {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+/* Tablet and up: 2 columns */
+@media (min-width: 640px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns, more spacing */
+@media (min-width: 960px) {
+  :root {
+    --gap: 2rem;
+    --section-space: 5rem;
+    --nav-gap: 2rem;
+  }
+
+  .section-nav {
+    padding: 3rem 2rem;
+  }
+
+  .section-nav a {
+    font-size: 1.05rem;
+  }
+
+  main {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+  }
+}
