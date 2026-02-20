@@ -21,7 +21,6 @@ html {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -38,7 +37,6 @@ body {
   line-height: 1.5;
   color: var(--text);
   background-color: var(--bg);
-  overflow-x: hidden;
 }
 
 /* Hero: video then "Thank you for coming" – full width, no side gaps */

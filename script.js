@@ -1,11 +1,19 @@
 (function () {
   'use strict';
 
-  /* Hero video: ensure autoplay muted (helps on iOS and strict browsers) */
+  /* Hero video: autoplay muted. On mobile, start on first touch/scroll if blocked */
   var heroVideo = document.getElementById('hero-video');
   if (heroVideo) {
     heroVideo.muted = true;
+    heroVideo.setAttribute('playsinline', '');
     heroVideo.play().catch(function () {});
+
+    function tryPlay() {
+      heroVideo.muted = true;
+      heroVideo.play().catch(function () {});
+    }
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+    document.addEventListener('scroll', tryPlay, { once: true, passive: true });
   }
 
   /* Sticky nav: smooth scroll to sections */
