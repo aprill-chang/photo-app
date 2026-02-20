@@ -206,6 +206,12 @@ main {
   display: block;
   object-fit: cover;
   aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.05);
 }
 
 /* Other Videos section – embed style with mute button (like hero) */
@@ -287,4 +293,112 @@ main {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--gap);
   }
+}
+
+/* Lightbox: full-screen image viewer (like Jovana Rikalo portfolio) */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding: 3rem 4rem;
+  box-sizing: border-box;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 2rem;
+  line-height: 1;
+  color: #1a1a1a;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus {
+  opacity: 0.7;
+  outline: none;
+}
+
+.lightbox-counter {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 3;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: #1a1a1a;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lightbox-prev:hover,
+.lightbox-prev:focus,
+.lightbox-next:hover,
+.lightbox-next:focus {
+  opacity: 0.7;
+  outline: none;
+}
+
+.lightbox-prev {
+  left: 1rem;
+}
+
+.lightbox-next {
+  right: 1rem;
 }

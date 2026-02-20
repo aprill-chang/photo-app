@@ -1,19 +1,28 @@
 (function () {
   'use strict';
 
-  /* Hero video: autoplay muted. On mobile, start on first touch/scroll if blocked */
+  /* Hero video: autoplay muted without user scroll. Try multiple triggers so it starts on load when possible */
   var heroVideo = document.getElementById('hero-video');
   if (heroVideo) {
     heroVideo.muted = true;
     heroVideo.setAttribute('playsinline', '');
-    heroVideo.play().catch(function () {});
 
     function tryPlay() {
       heroVideo.muted = true;
       heroVideo.play().catch(function () {});
     }
+
+    tryPlay();
+    if (document.readyState !== 'complete') {
+      window.addEventListener('load', tryPlay);
+    }
+    window.addEventListener('pageshow', tryPlay);
+    requestAnimationFrame(function () { tryPlay(); });
+    setTimeout(tryPlay, 100);
+    setTimeout(tryPlay, 400);
+    heroVideo.addEventListener('loadeddata', tryPlay);
+    heroVideo.addEventListener('canplay', tryPlay);
     document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
-    document.addEventListener('scroll', tryPlay, { once: true, passive: true });
   }
 
   /* Sticky nav: smooth scroll to sections */
@@ -144,4 +153,77 @@
     video.addEventListener('volumechange', updateBtn);
     updateBtn();
   });
+
+  /* Lightbox: click photo to open, prev/next, close */
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = lightbox && lightbox.querySelector('.lightbox-image');
+  var lightboxCounter = lightbox && lightbox.querySelector('.lightbox-counter');
+  var lightboxClose = lightbox && lightbox.querySelector('.lightbox-close');
+  var lightboxBackdrop = lightbox && lightbox.querySelector('.lightbox-backdrop');
+  var lightboxPrev = lightbox && lightbox.querySelector('.lightbox-prev');
+  var lightboxNext = lightbox && lightbox.querySelector('.lightbox-next');
+
+  if (lightbox && lightboxImg) {
+    var lightboxImages = [];
+    var lightboxIndex = 0;
+
+    function showLightbox() {
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      updateLightboxImage();
+    }
+
+    function hideLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function updateLightboxImage() {
+      if (lightboxImages.length === 0) return;
+      var img = lightboxImages[lightboxIndex];
+      lightboxImg.setAttribute('src', img.src || img.getAttribute('src'));
+      lightboxImg.setAttribute('alt', img.alt || '');
+      if (lightboxCounter) lightboxCounter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+    }
+
+    function goPrev() {
+      if (lightboxImages.length <= 1) return;
+      lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+      updateLightboxImage();
+    }
+
+    function goNext() {
+      if (lightboxImages.length <= 1) return;
+      lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+      updateLightboxImage();
+    }
+
+    document.querySelectorAll('.photo-grid').forEach(function (grid) {
+      var imgs = grid.querySelectorAll('img');
+      imgs.forEach(function (img, i) {
+        img.addEventListener('click', function () {
+          lightboxImages = Array.prototype.slice.call(imgs);
+          lightboxIndex = i;
+          showLightbox();
+        });
+      });
+    });
+
+    if (lightboxClose) lightboxClose.addEventListener('click', hideLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', hideLightbox);
+    if (lightboxPrev) lightboxPrev.addEventListener('click', goPrev);
+    if (lightboxNext) lightboxNext.addEventListener('click', goNext);
+
+    lightbox.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') hideLightbox();
+      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowRight') goNext();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); hideLightbox(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+    });
+  }
 })();
