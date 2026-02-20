@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  /* Hero video: ensure autoplay muted (helps on iOS and strict browsers) */
+  var heroVideo = document.getElementById('hero-video');
+  if (heroVideo) {
+    heroVideo.muted = true;
+    heroVideo.play().catch(function () {});
+  }
+
   /* Sticky nav: smooth scroll to sections */
   var nav = document.querySelector('.section-nav');
   if (nav) {
