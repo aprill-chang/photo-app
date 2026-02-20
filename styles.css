@@ -116,7 +116,7 @@ body {
   color: var(--text);
 }
 
-/* Section navigation – sticky at top when scrolling */
+/* Section navigation – sticky at top when scrolling (tighter on mobile) */
 .section-nav {
   position: sticky;
   top: 0;
@@ -124,29 +124,37 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--nav-gap);
-  padding: 2.5rem 1.5rem;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.75rem 0.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   background-color: var(--bg);
 }
 
 .section-nav a {
   font-family: var(--font-serif);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 400;
   color: var(--text);
   text-decoration: none;
   letter-spacing: 0.03em;
-  padding: 0.25em 0;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, opacity 0.2s ease;
+  padding: 0.35em 0.25em;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease, font-weight 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
 }
 
 .section-nav a:hover,
 .section-nav a:focus {
-  opacity: 0.8;
-  border-bottom-color: var(--text-muted);
+  opacity: 0.85;
   outline: none;
+}
+
+/* Active section: Google-style bold + underline */
+.section-nav a.active {
+  font-weight: 700;
+  border-bottom-color: var(--text);
+  color: var(--text);
 }
 
 /* Main content */
@@ -239,11 +247,12 @@ main {
   }
 
   .section-nav {
-    padding: 3rem 2rem;
+    gap: var(--nav-gap);
+    padding: 1.25rem 1rem;
   }
 
   .section-nav a {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   main {

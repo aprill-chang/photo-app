@@ -20,6 +20,45 @@
     });
   }
 
+  /* Active nav link: bold + underline for section in view (Google tab style) */
+  var sectionIds = ['getting-ready', 'first-look', 'ceremony', 'cocktail-hours', 'group-photo', 'reception', 'after-party', 'other-videos'];
+  var navLinksById = {};
+  sectionIds.forEach(function (id) {
+    var link = document.querySelector('.section-nav a[href="#' + id + '"]');
+    if (link) navLinksById[id] = link;
+  });
+
+  function setActiveSection(id) {
+    Object.keys(navLinksById).forEach(function (linkId) {
+      var link = navLinksById[linkId];
+      if (linkId === id) {
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.classList.remove('active');
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  function updateActiveOnScroll() {
+    var vh = window.innerHeight;
+    var trigger = vh * 0.35;
+    var current = null;
+    for (var i = 0; i < sectionIds.length; i++) {
+      var el = document.getElementById(sectionIds[i]);
+      if (!el) continue;
+      var top = el.getBoundingClientRect().top;
+      if (top <= trigger) current = sectionIds[i];
+    }
+    if (current) setActiveSection(current);
+  }
+
+  window.addEventListener('scroll', function () {
+    requestAnimationFrame(updateActiveOnScroll);
+  }, { passive: true });
+  updateActiveOnScroll();
+
   /* Hero video: mute/unmute button (Instagram-style) */
   var heroVideo = document.getElementById('hero-video');
   var muteBtn = document.querySelector('.mute-btn');
